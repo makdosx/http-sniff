@@ -17,4 +17,4 @@
 
 ![1http_sniff](images/1http_sniff.png) <br> <br> <br> 
 
-![2http_sniff](2http_sniff.png)
+![2http_sniff](images/2http_sniff.png)
