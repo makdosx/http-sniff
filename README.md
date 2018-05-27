@@ -1,4 +1,4 @@
- Http-sniff is a programm for sniff all trafic in a lan ow wlan network <br><br>
+ Http-sniff is a program for sniff all traffic in a lan or wlan network <br><br>
  
  Instructions for installing libraries <br><br>
  
